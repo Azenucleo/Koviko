@@ -2,34 +2,64 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
-{
-    Animator animator;
+public class Enemy : MonoBehaviour {
+    [Header("Movement")]
+    public float speed = 0.3f;
+    [Header("Attack")]
 
-    public float Health {
-        set {
-            health = value;
-            if(health <= 0) {
-                Defeated();
+    [SerializeField] private float attackDamage = 10f;
+    [SerializeField] private float attackSpeed = 1f;
+    private float canAttack;
+
+    [Header("Health")]
+    private float health;
+
+    private Transform target;
+
+    [SerializeField] private float maxHealth;
+
+    private Transform Target;
+
+    private void Start () {
+        health = maxHealth;
+    }
+
+    public void TakeDamage(float dmg) {
+        health -= dmg;
+        Debug.Log("Enemy Health: " + health);
+
+        if (health <=0) {
+            Destroy(gameObject);
+        }
+    }
+
+    private void FixedUpdate() {
+        if (target != null) {
+            float step = speed * Time.deltaTime;
+            transform.position = Vector2.MoveTowards(transform.position, target.position, step);
+        }
+    }
+
+    private void OnCollisionStay2D(Collision2D other) {
+        if (other.gameObject.tag == "Player") {
+            if (attackSpeed <= canAttack) {
+                other.gameObject.GetComponent<PlayerHealth>().UpdateHealth(-attackDamage);
+                canAttack = 0f;
+            } else {
+                canAttack += Time.deltaTime;
             }
         }
-        get {
-            return health;
+    }
+
+    private void OnTriggerEnter2D(Collider2D other) {
+        if (other.gameObject.tag == "Player") {
+            target = other.transform;
         }
     }
 
-
-    public float health = 1;
-
-    private void Start() {
-        animator = GetComponent<Animator>();
-    }
-
-    public void Defeated() {
-        animator.SetTrigger("Defeated");
-    }
-
-    public void RemoveEnemy() {
-        Destroy(gameObject);
+    private void OnTriggerExit2D(Collider2D other) {
+        if (other.gameObject.tag == "Player") {
+            target = null;
+        }
     }
 }
