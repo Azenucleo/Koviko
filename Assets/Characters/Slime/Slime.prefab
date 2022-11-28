@@ -134,3 +134,4 @@ MonoBehaviour:
   speed: 0.3
   attackDamage: 10
   attackSpeed: 1
+  maxHealth: 0
