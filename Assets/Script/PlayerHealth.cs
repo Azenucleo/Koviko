@@ -5,29 +5,35 @@ using UnityEngine.UI;
 
 
 public class PlayerHealth : MonoBehaviour {
-    private float health = 0f;
-    [SerializeField] private float maxHealth = 100f;
+    //private float health = 0f;
+    //[SerializeField] private float maxHealth = 100f;
+    public float currentHealth;
+    public float maxHealth;
     [SerializeField] private Slider healthSlider;
 
     private void Start() {
-        health = maxHealth;
+        currentHealth = maxHealth;
         healthSlider.maxValue = maxHealth;
     }
 
     public void UpdateHealth(float mod) {
-        health += mod;
+        currentHealth += mod;
 
-        if (health > maxHealth) {
-            health = maxHealth;
-        } else if (health <= 0f) {
-            health = 0f;
-            healthSlider.value = health;
+        if (currentHealth > maxHealth) {
+            currentHealth = maxHealth;
+        } else if (currentHealth <= 0f) {
+            currentHealth = 0f;
+            healthSlider.value = currentHealth;
             Destroy(gameObject);
         }
     }
 
     private void OnGUI() {
         float t = Time.deltaTime / 1f;
-        healthSlider.value = Mathf.Lerp(healthSlider.value, health, t);
+        healthSlider.value = Mathf.Lerp(healthSlider.value, currentHealth, t);
+    }
+
+    public void TakeDamage(float damage) {
+        currentHealth -= damage;
     }
 }

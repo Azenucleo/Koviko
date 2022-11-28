@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class BasicMovement : MonoBehaviour {
 
+    [SerializeField] Transform hand;
+
     [Header("Component")]
     Rigidbody2D rb;
     Animator anim;
 
     [Header("Stat")]
-    [SerializeField]
-    float moveSpeed;
+    [SerializeField] float moveSpeed;
     //public int currentHealth;
     //public int maxHealth;
 
@@ -28,18 +29,43 @@ public class BasicMovement : MonoBehaviour {
         anim = GetComponent<Animator>();
     }
 
+    void Update() {
+        RotateHand();
+    }
+
     private void FixedUpdate() {
         Move();
+    }
+
+    void RotateHand() {
+        float angle = Utility.AngleTowardsMouse(hand.position);
+        hand.rotation = Quaternion.Euler(new Vector3(0f, 0f, angle));
     }
 
 
 
     void Move() {
 
-        if(Input.GetAxis("Horizontal") > 0.1 || Input.GetAxis("Horizontal") < -0.1 || Input.GetAxis("Vertical") > 0.1 || Input.GetAxis("Vertical") < -0.1 ) {
-            anim.SetFloat("lastInputX", Input.GetAxis("Horizontal"));
-            anim.SetFloat("lastInputY", Input.GetAxis("Vertical"));
+        if(Input.GetAxis("Horizontal") > 0.1) {
+            anim.SetFloat("lastInputX", 1);
+            anim.SetFloat("lastInputY", 0);
         }
+        
+        else if (Input.GetAxis("Horizontal") < -0.1 ) {
+            anim.SetFloat("lastInputX", -1);
+            anim.SetFloat("lastInputY", 0);
+        }
+
+        if(Input.GetAxis("Vertical") > 0.1) {
+            anim.SetFloat("lastInputX", 0);
+            anim.SetFloat("lastInputY", 1);
+        }
+
+        else if (Input.GetAxis("Vertical") < -0.1) {
+            anim.SetFloat("lastInputX", 0);
+            anim.SetFloat("lastInputY", -1);
+        }
+
         float x = Input.GetAxis("Horizontal");
         float y = Input.GetAxis("Vertical");
 

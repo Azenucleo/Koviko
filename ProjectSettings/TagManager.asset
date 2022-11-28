@@ -16,7 +16,7 @@ TagManager:
   - PlayerProjectile
   - CollisionObject
   - Montagne
-  - 
+  - Enemy
   - 
   - 
   - 
@@ -50,4 +50,7 @@ TagManager:
     locked: 0
   - name: BehindPlayer
     uniqueID: 1980721001
+    locked: 0
+  - name: UI
+    uniqueID: 2599888391
     locked: 0

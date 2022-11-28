@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Pathfinding;
 
-public class Enemy : MonoBehaviour {
+public class Enemy : EnemyStats {
     [Header("Stats")]
     [SerializeField] float speed;
     private float playerDetectTime;
@@ -13,10 +13,8 @@ public class Enemy : MonoBehaviour {
 
     [Header("Attack")]
     [SerializeField] float attackRange;
-    [SerializeField] int damage;
     [SerializeField] float attackRate;
     private float lastAttackTime;
-    private float canAttack;
     public Transform attackPoint;
     public LayerMask playerLayerMask;
 
@@ -38,7 +36,7 @@ public class Enemy : MonoBehaviour {
         seeker = GetComponent<Seeker>();
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
-
+        InitilizeBar();
         InvokeRepeating("UpdatePath",0f, 0.5f);
     }
 
@@ -66,9 +64,18 @@ public class Enemy : MonoBehaviour {
             float dist = Vector2.Distance(transform.position, targetPlayer.transform.position);
 
         if(dist < attackRange && Time.time - lastAttackTime >= attackRate) {
+            StartCoroutine(Delay());
+
+            IEnumerator Delay() {
+                yield return new WaitForSeconds(Random.Range(0.1f, 1f));
+
+                if(dist < attackRange) {
+                anim.SetTrigger("attack");
+                rb.velocity = Vector2.zero;
+                }
+            }
             lastAttackTime = Time.time;
-            anim.SetTrigger("attack");
-            rb.velocity = Vector2.zero;
+
         } else if (dist > attackRange) {
             if (path == null)
                 return;
@@ -129,16 +136,12 @@ public class Enemy : MonoBehaviour {
         transform.Rotate(0,180f, 0);
     }
 
-    void Attack() {
-        Collider2D player = Physics2D.OverlapCircle(attackPoint.transform.position, 0.5f, playerLayerMask);
-
-        if(player.tag == "Player") {
-            if (attackRate <= canAttack) {
-                player.GetComponent<PlayerHealth>().UpdateHealth(-damage);
-                canAttack = 0f;
-            } else {
-                canAttack += Time.deltaTime;
-            }
-        }
-    }
+   //void Attack() {
+   //    Collider2D player = Physics2D.OverlapCircle(attackPoint.transform.position, 0.5f, playerLayerMask);
+//
+   //    if(player != null && player.tag == "Player") {
+   //        
+   //        player.GetComponent<PlayerHealth>().TakeDamage(damage);
+   //    }
+   //}
 }
