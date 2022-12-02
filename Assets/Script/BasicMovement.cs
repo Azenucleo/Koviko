@@ -12,9 +12,6 @@ public class BasicMovement : MonoBehaviour {
 
     [Header("Stat")]
     [SerializeField] float moveSpeed;
-    //public int currentHealth;
-    //public int maxHealth;
-
 
 
     public static BasicMovement instance;
@@ -24,7 +21,6 @@ public class BasicMovement : MonoBehaviour {
     }
 
     void Start() {
-        //currentHealth = maxHealth;
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
     }
@@ -77,9 +73,5 @@ public class BasicMovement : MonoBehaviour {
             anim.SetFloat("inputY", y);
         }
     }
-
-    //public void TakeDamage(int damage) {
-    //    currentHealth -= damage;
-    //}
     
 }

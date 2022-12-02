@@ -9,6 +9,7 @@ public class Enemy : EnemyStats {
     private float playerDetectTime;
     public float playerDetectRate;
     public float chaseRange;
+    public float damage;
     bool lookRight;
 
     [Header("Attack")]
@@ -136,12 +137,12 @@ public class Enemy : EnemyStats {
         transform.Rotate(0,180f, 0);
     }
 
-   //void Attack() {
-   //    Collider2D player = Physics2D.OverlapCircle(attackPoint.transform.position, 0.5f, playerLayerMask);
-//
-   //    if(player != null && player.tag == "Player") {
-   //        
-   //        player.GetComponent<PlayerHealth>().TakeDamage(damage);
-   //    }
-   //}
+   void Attack() {
+       Collider2D player = Physics2D.OverlapCircle(attackPoint.transform.position, 1f, playerLayerMask);
+
+       if(player != null && player.tag == "Player") {
+           
+           player.GetComponent<PlayerHealth>().TakeDamage(damage);
+       }
+   }
 }

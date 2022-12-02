@@ -8,6 +8,8 @@ public class EnemyStats : MonoBehaviour {
     private float health;
     [SerializeField] private float maxHealth;
 
+    public GameObject lootDrop;
+
     private void Start() {
         health = maxHealth;
     }
@@ -34,22 +36,7 @@ public class EnemyStats : MonoBehaviour {
         
         if (health <= 0) {
             Destroy(gameObject);
+            Instantiate(lootDrop, transform.position, Quaternion.identity);
         }
     }
 }
-//    public int damage;
-//    //protected int currentHealth;
-//    private float health;
-//    [SerializeField] private int maxHealth;
-//
-//
-//    public void TakeDamage(int damage) {
-//        health -= damage;
-//        UpdateHealthBar(health);
-//        healthBar.SetActive(true);
-//
-//        if(health <= 0) {
-//            Destroy(gameObject);
-//        }
-//    }
-//}

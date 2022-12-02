@@ -6,8 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Menu.unity
-    guid: fef2135e10021784591dd5cfe73699e5
+    path: Assets/Scenes/MainMenu.unity
+    guid: 9fbd6f79306f5be4aa129876899d321a
   - enabled: 1
     path: Assets/Scenes/GameKoviko.unity
     guid: 2cda990e2423bbf4892e6590ba056729
